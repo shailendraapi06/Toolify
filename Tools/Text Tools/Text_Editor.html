@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All-in-One Text Tools – Word Counter, Case Converter & More | ToolHub Pro</title>
+    <meta name="description" content="Free professional text tools: word counter, character counter, sentence counter, and case converter. Fast, secure, and mobile-friendly all-in-one text processing hub.">
+    <link rel="canonical" href="https://toolhub.pro/text-tools" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --secondary: #f43f5e;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --white: #ffffff;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--slate-800);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+    /* header */
+.header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            height: var(--header-height); display: flex; align-items: center;
+            transition: var(--transition); background: transparent;
+        }
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            height: 70px;
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Modern Logo Styling */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.8rem; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        .logo-box { 
+            background: var(--primary); 
+            color: white; 
+            width: 38px; 
+            height: 38px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 10px; 
+            font-style: normal;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-box svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .logo span { color: var(--primary); transition: var(--transition); }
+        
+        /* Logo Hover Animation */
+        .logo:hover .logo-box {
+            transform: rotate(10deg) scale(1.1);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        }
+        .logo:hover span {
+            color: var(--secondary);
+            margin-left: 2px;
+        }
+
+        .nav-links { display: none; gap: 2rem; list-style: none; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { 
+            font-weight: 700; font-size: 0.95rem; color: var(--slate-600); text-decoration: none;
+            padding: 10px 0; transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .nav-link:hover { color: var(--primary); }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: white; min-width: 220px; border-radius: 16px; padding: 1rem;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--slate-200);
+            opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-item {
+            padding: 0.8rem 1rem; text-decoration: none; color: var(--slate-600); font-weight: 600;
+            display: block; border-radius: 8px; transition: var(--transition); font-size: 0.9rem;
+        }
+        .dropdown-item:hover { background: var(--slate-100); color: var(--primary); padding-left: 1.2rem; }
+
+        /* Start Now Button Fix */
+        .btn-cta {
+            background: var(--dark); color: white; padding: 0.75rem 1.8rem;
+            border-radius: 100px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; transition: var(--transition); border: 2px solid var(--dark);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-cta:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .mobile-toggle { display: flex; padding: 0.6rem; background: var(--slate-100); border: none; border-radius: 12px; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 1024px) {
+            .nav-links { display: flex; }
+            .mobile-toggle { display: none; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; inset: 0; background: white; z-index: 2000;
+            padding: 2rem; transform: translateX(100%); transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+        .mobile-nav-link { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); display: flex; align-items: center; justify-content: space-between; }
+        .mobile-dropdown { padding-left: 1.5rem; margin-top: 0.5rem; display: none; flex-direction: column; gap: 0.8rem; border-left: 2px solid var(--slate-200); }
+        .mobile-dropdown.active { display: flex; }
+        .mobile-dropdown-item { font-size: 1.1rem; text-decoration: none; color: var(--slate-500); font-weight: 600; }
+
+        /* Hero (Refined/Compact) */
+        .main-content {
+            max-width: 1000px;
+            margin: 90px auto 40px;
+            padding: 0 20px;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            background: #eef2ff;
+            border: 1px solid #e0e7ff;
+            border-radius: 100px;
+            color: var(--primary);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0.7); }
+            70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(79, 70, 229, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(79, 70, 229, 0); }
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 12px;
+            line-height: 1.2;
+            letter-spacing: -0.5px;
+        }
+
+        @media (min-width: 768px) {
+            h1 { font-size: 2.75rem; }
+        }
+
+        .text-gradient {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1rem;
+            color: var(--slate-500);
+            max-width: 540px;
+            margin: 0 auto;
+        }
+
+        /* Tool Container (Usability Optimized) */
+        .tool-container {
+            background: var(--white);
+            border-radius: 20px;
+            border: 1px solid var(--slate-200);
+            box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            margin-bottom: 40px;
+        }
+
+        .tool-header-line {
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), #a855f7, var(--secondary));
+        }
+
+        .tool-body {
+            padding: 20px;
+        }
+
+        @media (min-width: 768px) {
+            .tool-body { padding: 32px; }
+        }
+
+        .textarea-wrapper {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 280px;
+            background: var(--slate-50);
+            border: 2px solid var(--slate-200);
+            border-radius: 14px;
+            padding: 20px;
+            font-family: inherit;
+            font-size: 1.1rem;
+            color: var(--slate-800);
+            resize: vertical;
+            min-height: 180px;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        textarea:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.08);
+        }
+
+        .textarea-actions {
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .btn-secondary {
+            background: white;
+            border-color: var(--slate-200);
+            color: var(--slate-500);
+        }
+
+        .btn-secondary:hover {
+            background: var(--slate-100);
+            color: var(--slate-800);
+            border-color: var(--slate-300);
+        }
+
+        .btn-danger:hover {
+            background: #fff1f2;
+            color: var(--secondary);
+            border-color: #fecdd3;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: #059669;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #047857;
+            transform: translateY(-1px);
+        }
+
+        /* Stats Grid (More integrated) */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        @media (min-width: 768px) {
+            .stats-grid { grid-template-columns: repeat(5, 1fr); }
+        }
+
+        .stat-card {
+            background: var(--slate-50);
+            border: 1px solid var(--slate-100);
+            padding: 14px;
+            border-radius: 12px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            background: white;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.04);
+            transform: translateY(-1px);
+            border-color: var(--slate-200);
+        }
+
+        .stat-icon { font-size: 1rem; display: block; margin-bottom: 2px; }
+        .stat-value { display: block; font-size: 1.25rem; font-weight: 900; color: var(--slate-900); }
+        .stat-label { display: block; font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.8px; color: var(--slate-400); margin-top: 2px; }
+
+        /* Actions Section */
+        .actions-section {
+            padding-top: 20px;
+            border-top: 1px solid var(--slate-100);
+        }
+
+        .section-title {
+            font-size: 9px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--slate-400);
+            margin-bottom: 12px;
+        }
+
+        .actions-flex {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: white;
+            border: 1px solid var(--slate-200);
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.825rem;
+            color: var(--slate-700);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #f5f3ff;
+            transform: translateY(-1px);
+        }
+
+        .action-btn.featured {
+            background: #eef2ff;
+            border-color: #e0e7ff;
+            color: var(--primary);
+        }
+
+        .action-btn.featured:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        /* SEO Content */
+        .seo-container {
+            background: white;
+            border-radius: 20px;
+            padding: 24px;
+            border: 1px solid var(--slate-200);
+            margin-bottom: 48px;
+        }
+
+        @media (min-width: 768px) {
+            .seo-container { padding: 40px; }
+        }
+
+        .seo-article h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 12px;
+            margin-top: 24px;
+        }
+
+        .seo-article p {
+            font-size: 1rem;
+            color: var(--slate-600);
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        /* FAQ */
+        .faq-box {
+            background: var(--slate-50);
+            border-radius: 14px;
+            padding: 24px;
+            margin-top: 40px;
+            border: 1px solid var(--slate-100);
+        }
+
+        .faq-item {
+            margin-bottom: 20px;
+        }
+
+        .faq-item:last-child { margin-bottom: 0; }
+
+        .faq-item h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--slate-800);
+            margin-bottom: 6px;
+        }
+
+        .faq-item p {
+            font-size: 0.925rem;
+            color: var(--slate-500);
+            margin-bottom: 0;
+        }
+
+         /* Footer */
+        .footer { background: #020617; color: white; padding: 6rem 0 4rem; position: relative; }
+        .footer-grid { display: grid; gap: 4rem; grid-template-columns: 1fr; margin-bottom: 5rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        
+        .footer-brand p { color: var(--slate-400); font-size: 1rem; margin-top: 1.5rem; max-width: 350px; line-height: 1.8; }
+        .footer-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 0.15em; margin-bottom: 2rem; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--slate-400); text-decoration: none; font-size: 1rem; font-weight: 600; transition: var(--transition); }
+        .footer-links a:hover { color: white; transform: translateX(8px); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-5px); border-color: var(--primary); }
+
+        /* Animation utilities */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 100px 0 40px; min-height: auto; }
+            .hero-btns { flex-direction: column; align-items: stretch; padding: 0 1.5rem; }
+            .section { padding: 4rem 0; }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--slate-50); }
+        ::-webkit-scrollbar-thumb { background: var(--slate-200); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
+        .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: #ffffff;           /*  solid background */
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.header.scrolled {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+/* smooth navigation transition */
+body {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+    </style>
+</head>
+<body>
+
+     <!-- Navbar -->
+   <div id="navbar"></div>
+
+    <main class="main-content">
+        <section class="hero">
+            <div class="badge">Efficiency Suite</div>
+            <h1>Text Tools – <span class="text-gradient">Fast & Simple</span></h1>
+            <p>Paste once, transform instantly. Professional character counting and case conversion at your fingertips.</p>
+        </section>
+
+        <section class="tool-container">
+            <div class="tool-header-line"></div>
+            <div class="tool-body">
+                <div class="textarea-wrapper">
+                    <textarea id="mainText" placeholder="Paste or type your text here..."></textarea>
+                    <div class="textarea-actions">
+                        <button class="btn btn-secondary btn-danger" onclick="clearText()" title="Clear all text">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"></path></svg>
+                            Clear
+                        </button>
+                        <button class="btn btn-secondary" onclick="copyText()" title="Copy text to clipboard">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75"></path></svg>
+                            Copy
+                        </button>
+                        <button class="btn btn-success" onclick="downloadTextFile()" title="Download text as .txt file">
+                            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"></path></svg>
+                            Download (.txt)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <span class="stat-icon">📝</span>
+                        <span class="stat-value" id="statWords">0</span>
+                        <span class="stat-label">Words</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">⌨️</span>
+                        <span class="stat-value" id="statCharsAll">0</span>
+                        <span class="stat-label">Chars (All)</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">🔠</span>
+                        <span class="stat-value" id="statCharsNoSpace">0</span>
+                        <span class="stat-label">Chars (No Spc)</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">📖</span>
+                        <span class="stat-value" id="statSentences">0</span>
+                        <span class="stat-label">Sentences</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-icon">📑</span>
+                        <span class="stat-value" id="statParagraphs">0</span>
+                        <span class="stat-label">Paragraphs</span>
+                    </div>
+                </div>
+
+                <div class="actions-section">
+                    <div class="section-title">Quick Transformations</div>
+                    <div class="actions-flex">
+                        <button class="action-btn" onclick="transformCase('upper')">UPPERCASE</button>
+                        <button class="action-btn" onclick="transformCase('lower')">lowercase</button>
+                        <button class="action-btn" onclick="transformCase('title')">Title Case</button>
+                        <button class="action-btn" onclick="transformCase('sentence')">Sentence case</button>
+                        <button class="action-btn featured" onclick="removeSpaces()">
+                            <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                                <path d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z" />
+                            </svg>
+                            Clean Spaces
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="seo-container">
+            <article class="seo-article">
+                <h2>Word and Character Counter</h2>
+                <p>Tracking the length of your text is critical for social media, SEO meta tags, and academic submissions. Our <strong>word counter</strong> and <strong>character counter</strong> provide instant feedback as you type. Whether it is a 280-character tweet or a 155-character meta description, accurate counting ensures your message fits perfectly.</p>
+
+                <h2>Case Converter Tool</h2>
+                <p>Effortlessly format headlines or fix accidentally typed all-caps text with our <strong>Case Converter</strong>. Switch between UPPERCASE, lowercase, Title Case, and Sentence Case in a single click. It is the fastest way to normalize text styles for professional documents or web content.</p>
+
+                <div class="faq-box">
+                    <h2 style="text-align: center; margin-top: 0; font-size: 1.25rem;">Quick FAQs</h2>
+                    <div class="faq-item">
+                        <h3>Is my text secure?</h3>
+                        <p>Yes. All processing happens 100% locally in your browser. Your data is never uploaded to any server, ensuring complete privacy.</p>
+                    </div>
+                    <div class="faq-item">
+                        <h3>How does Title Case work?</h3>
+                        <p>It capitalizes the first letter of every word. It's ideal for headlines, titles, and clean formatting in lists.</p>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <script>
+        const textarea = document.getElementById('mainText');
+        const statWords = document.getElementById('statWords');
+        const statCharsAll = document.getElementById('statCharsAll');
+        const statCharsNoSpace = document.getElementById('statCharsNoSpace');
+        const statSentences = document.getElementById('statSentences');
+        const statParagraphs = document.getElementById('statParagraphs');
+        const navbar = document.getElementById('navbar');
+
+        function updateStats() {
+            const text = textarea.value;
+            const trimmed = text.trim();
+
+            const words = trimmed ? trimmed.split(/\s+/).filter(Boolean).length : 0;
+            const charsAll = text.length;
+            const charsNoSpace = text.replace(/\s/g, '').length;
+            const sentences = trimmed ? trimmed.split(/[.!?]+/).filter(s => s.trim().length > 0).length : 0;
+            const paragraphs = trimmed ? trimmed.split(/\n+/).filter(p => p.trim().length > 0).length : 0;
+
+            statWords.textContent = words.toLocaleString();
+            statCharsAll.textContent = charsAll.toLocaleString();
+            statCharsNoSpace.textContent = charsNoSpace.toLocaleString();
+            statSentences.textContent = sentences.toLocaleString();
+            statParagraphs.textContent = paragraphs.toLocaleString();
+        }
+
+        function transformCase(type) {
+            let text = textarea.value;
+            if (!text) return;
+
+            switch (type) {
+                case 'upper': text = text.toUpperCase(); break;
+                case 'lower': text = text.toLowerCase(); break;
+                case 'title':
+                    text = text.toLowerCase().split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+                    break;
+                case 'sentence':
+                    text = text.toLowerCase().replace(/(^\s*\w|[.!?]\s*\w)/g, c => c.toUpperCase());
+                    break;
+            }
+            
+            textarea.value = text;
+            updateStats();
+        }
+
+        function removeSpaces() {
+            textarea.value = textarea.value.replace(/\s+/g, ' ').trim();
+            updateStats();
+        }
+
+        function copyText() {
+            if (!textarea.value) return;
+            navigator.clipboard.writeText(textarea.value).then(() => {
+                const btn = event.currentTarget;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = 'Copied!';
+                setTimeout(() => btn.innerHTML = originalText, 2000);
+            });
+        }
+
+        function clearText() {
+            if (textarea.value && confirm('Are you sure you want to clear all text?')) {
+                textarea.value = '';
+                updateStats();
+            }
+        }
+
+        function downloadTextFile() {
+            const text = textarea.value;
+            if (!text) {
+                alert('Please enter some text first.');
+                return;
+            }
+            const blob = new Blob([text], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `toolhub-text-${new Date().getTime()}.txt`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        textarea.addEventListener('input', updateStats);
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 20) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Initialize empty stats
+        updateStats();
+    </script>
+
+    <!-- js for navbar and footer -->
+ <script>
+fetch("/include/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+  });
+
+fetch("/include/footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
+</script>
+
+
+<script>
+document.addEventListener("click", function (e) {
+
+  /* =========================
+     MOBILE MENU OPEN
+  ========================== */
+  if (e.target.closest("#openMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  /* =========================
+     MOBILE MENU CLOSE
+  ========================== */
+  if (e.target.closest("#closeMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
+
+  /* =========================
+     MOBILE CATEGORIES DROPDOWN
+     (MATCHES YOUR navbar.html)
+  ========================== */
+  if (e.target.closest("#mobileCatToggle")) {
+    const dropdown = document.getElementById("mobileDropdown");
+    if (dropdown) {
+      dropdown.classList.toggle("active");
+    }
+  }
+
+});
+
+// page navigation with fade effect
+document.addEventListener("click", function (e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href) return;
+
+  // ❌ hash links ignore ( #popular , /index.html#popular )
+  if (href.includes("#")) return;
+
+  // ❌ new tab links ignore
+  if (link.hasAttribute("target")) return;
+
+  // ❌ external links ignore
+  if (link.origin !== location.origin) return;
+
+  // ❌ empty / js links ignore
+  if (href === "#" || href.startsWith("javascript")) return;
+
+  // ✅ real page navigation only
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 120);
+});
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted) {
+    window.location.reload();
+  }
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,918 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>QRPro – Professional Multi-Type QR Code Generator</title>
+    <meta name="description" content="Generate advanced QR codes for URLs, WiFi, Payments, vCards, and more. A free, offline-capable professional tool with custom styling options.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%234f46e5%22/><text y=%22.75em%22 x=%22.15em%22 font-size=%2270%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22900%22>Q</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- QR Code Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-soft: rgba(79, 70, 229, 0.08);
+            --secondary: #f43f5e;
+            --dark: #0f172a;
+            --white: #ffffff;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 72px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { width: 100%; max-width: 1240px; margin: 0 auto; padding: 0 1.25rem; }
+
+       /* header */
+.header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            height: var(--header-height); display: flex; align-items: center;
+            transition: var(--transition); background: transparent;
+        }
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            height: 70px;
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Modern Logo Styling */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.8rem; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        .logo-box { 
+            background: var(--primary); 
+            color: white; 
+            width: 38px; 
+            height: 38px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 10px; 
+            font-style: normal;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-box svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .logo span { color: var(--primary); transition: var(--transition); }
+        
+        /* Logo Hover Animation */
+        .logo:hover .logo-box {
+            transform: rotate(10deg) scale(1.1);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        }
+        .logo:hover span {
+            color: var(--secondary);
+            margin-left: 2px;
+        }
+
+        .nav-links { display: none; gap: 2rem; list-style: none; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { 
+            font-weight: 700; font-size: 0.95rem; color: var(--slate-600); text-decoration: none;
+            padding: 10px 0; transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .nav-link:hover { color: var(--primary); }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: white; min-width: 220px; border-radius: 16px; padding: 1rem;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--slate-200);
+            opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-item {
+            padding: 0.8rem 1rem; text-decoration: none; color: var(--slate-600); font-weight: 600;
+            display: block; border-radius: 8px; transition: var(--transition); font-size: 0.9rem;
+        }
+        .dropdown-item:hover { background: var(--slate-100); color: var(--primary); padding-left: 1.2rem; }
+
+        /* Start Now Button Fix */
+        .btn-cta {
+            background: var(--dark); color: white; padding: 0.75rem 1.8rem;
+            border-radius: 100px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; transition: var(--transition); border: 2px solid var(--dark);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-cta:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .mobile-toggle { display: flex; padding: 0.6rem; background: var(--slate-100); border: none; border-radius: 12px; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 1024px) {
+            .nav-links { display: flex; }
+            .mobile-toggle { display: none; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; inset: 0; background: white; z-index: 2000;
+            padding: 2rem; transform: translateX(100%); transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+        .mobile-nav-link { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); display: flex; align-items: center; justify-content: space-between; }
+        .mobile-dropdown { padding-left: 1.5rem; margin-top: 0.5rem; display: none; flex-direction: column; gap: 0.8rem; border-left: 2px solid var(--slate-200); }
+        .mobile-dropdown.active { display: flex; }
+        .mobile-dropdown-item { font-size: 1.1rem; text-decoration: none; color: var(--slate-500); font-weight: 600; }
+
+
+        /* Hero */
+        .hero { 
+            padding: calc(var(--header-height) + 3rem) 0 4rem; 
+            text-align: center;
+            background: radial-gradient(circle at 80% 10%, rgba(79, 70, 229, 0.05), transparent);
+        }
+        .hero h1 { font-size: clamp(2.5rem, 8vw, 4rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.05em; margin-bottom: 1rem; }
+        .hero h1 span { color: var(--primary); }
+        .hero-desc { font-size: 1.15rem; color: var(--slate-500); max-width: 700px; margin: 0 auto 3rem; }
+
+        /* Generator Layout */
+        .generator-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 2rem;
+            max-width: 1100px;
+            margin: 0 auto 4rem;
+        }
+
+        /* Category Selector */
+        .type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+        .type-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 0.5rem;
+            border-radius: 1rem;
+            border: 2px solid var(--slate-100);
+            background: var(--white);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--slate-500);
+            gap: 0.5rem;
+        }
+        .type-btn i { font-size: 1.5rem; font-style: normal; }
+        .type-btn.active {
+            border-color: var(--primary);
+            background: var(--primary-soft);
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.1);
+        }
+
+        /* Input Form Card */
+        .card {
+            background: var(--white);
+            padding: 2.5rem 2rem;
+            border-radius: 2rem;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-xl);
+            height: fit-content;
+        }
+
+        .input-group { text-align: left; margin-bottom: 1.5rem; }
+        .input-group label { display: block; font-weight: 700; margin-bottom: 0.6rem; font-size: 0.85rem; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .input-wrapper { position: relative; }
+        .input-wrapper input, .input-wrapper select, .input-wrapper textarea {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            border-radius: 1rem;
+            border: 2px solid var(--slate-100);
+            background: var(--slate-50);
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            font-family: inherit;
+        }
+        .input-wrapper input:focus, .input-wrapper select:focus, .input-wrapper textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+        .input-wrapper textarea { resize: vertical; min-height: 100px; }
+
+        .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+        /* Checkbox Styling */
+        .check-group { display: flex; align-items: center; gap: 0.75rem; cursor: pointer; user-select: none; }
+        .check-group input { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; }
+        .check-group span { font-weight: 600; font-size: 0.95rem; color: var(--slate-600); }
+
+        /* Preview Sidebar */
+        .preview-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .qr-preview-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: 2rem;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-xl);
+            text-align: center;
+            position: sticky;
+            top: calc(var(--header-height) + 2rem);
+        }
+
+        #qrcode {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.5rem;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            border: 1px solid var(--slate-100);
+        }
+        #qrcode img { margin: 0 auto; display: block; }
+
+        .btn-main {
+            width: 100%;
+            padding: 1.1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 1.1rem;
+            font-size: 1rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-main:hover { transform: translateY(-2px); background: var(--dark); box-shadow: 0 15px 30px -5px rgba(15, 23, 42, 0.2); }
+        
+        .btn-outline {
+            width: 100%;
+            padding: 1rem;
+            background: transparent;
+            color: var(--slate-500);
+            border: 2px solid var(--slate-100);
+            border-radius: 1.1rem;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+        .btn-outline:hover { background: var(--slate-50); color: var(--dark); border-color: var(--slate-300); }
+
+        /* Configuration Panel */
+        .config-panel {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 2px dashed var(--slate-100);
+        }
+
+        /* SEO Content */
+        .content-area { padding: 4rem 0; border-top: 1px solid var(--slate-200); }
+        .content-area h2 { font-size: 2rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.03em; }
+        .content-area p { font-size: 1.1rem; color: var(--slate-500); margin-bottom: 1.5rem; }
+
+        /* Tools section matches BMI theme */
+        .tools-section { padding: 6rem 0; background: var(--white); }
+        .tools-header { text-align: center; margin-bottom: 3.5rem; }
+        .tools-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+        .tool-card {
+            background: var(--slate-50);
+            padding: 2.5rem 2rem;
+            border-radius: 1.5rem;
+            text-decoration: none;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+        .tool-card:hover {
+            transform: translateY(-8px);
+            background: var(--white);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-xl);
+        }
+        .tool-card .icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+        .tool-card h3 { font-size: 1.25rem; font-weight: 800; color: var(--dark); margin-bottom: 0.5rem; }
+
+        /* Footer */
+        .footer { background: #020617; color: white; padding: 6rem 0 4rem; position: relative; }
+        .footer-grid { display: grid; gap: 4rem; grid-template-columns: 1fr; margin-bottom: 5rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        
+        .footer-brand p { color: var(--slate-400); font-size: 1rem; margin-top: 1.5rem; max-width: 350px; line-height: 1.8; }
+        .footer-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 0.15em; margin-bottom: 2rem; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--slate-400); text-decoration: none; font-size: 1rem; font-weight: 600; transition: var(--transition); }
+        .footer-links a:hover { color: white; transform: translateX(8px); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-5px); border-color: var(--primary); }
+
+        /* Animation utilities */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 100px 0 40px; min-height: auto; }
+            .hero-btns { flex-direction: column; align-items: stretch; padding: 0 1.5rem; }
+            .section { padding: 4rem 0; }
+        }
+
+        /* Helper Components */
+        .dynamic-fields { animation: fadeIn 0.4s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .generator-layout { grid-template-columns: 1fr; }
+            .preview-sidebar { order: -1; }
+            .qr-preview-card { position: relative; top: 0; }
+            .type-grid { grid-template-columns: repeat(4, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .type-grid { grid-template-columns: repeat(3, 1fr); }
+            .row { grid-template-columns: 1fr; }
+            .hero h1 { font-size: 2.2rem; }
+        }
+
+
+
+        .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: #ffffff;           /*  solid background */
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.header.scrolled {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+/* smooth navigation transition */
+body {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+    </style>
+</head>
+<body>
+
+   <!-- Navbar -->
+   <div id="navbar"></div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>The Ultimate <span>QR</span> Tool</h1>
+                <p class="hero-desc">Create high-quality QR codes for over 12 different formats. Instant generation, fully customizable, and zero data tracking.</p>
+
+                <div class="generator-layout">
+                    <!-- Left Column: Inputs -->
+                    <div class="card">
+                        <div class="input-group">
+                            <label>Select QR Category</label>
+                            <div class="type-grid" id="typeSelector">
+                                <button class="type-btn active" data-type="url"><i>🔗</i>URL</button>
+                                <button class="type-btn" data-type="wifi"><i>📶</i>WiFi</button>
+                                <button class="type-btn" data-type="vcard"><i>🪪</i>Contact</button>
+                                <button class="type-btn" data-type="email"><i>📧</i>Email</button>
+                                <button class="type-btn" data-type="sms"><i>💬</i>SMS</button>
+                                <button class="type-btn" data-type="whatsapp"><i>🟢</i>WhatsApp</button>
+                                <button class="type-btn" data-type="upi"><i>💸</i>Payment</button>
+                                <button class="type-btn" data-type="event"><i>📅</i>Event</button>
+                                <button class="type-btn" data-type="text"><i>📝</i>Text</button>
+                                <button class="type-btn" data-type="phone"><i>📞</i>Phone</button>
+                                <button class="type-btn" data-type="geo"><i>📍</i>Location</button>
+                                <button class="type-btn" data-type="social"><i>📱</i>Social</button>
+                            </div>
+                        </div>
+
+                        <div id="dynamicForm" class="dynamic-fields">
+                            <!-- Dynamic fields injected here -->
+                        </div>
+
+                        <div class="config-panel">
+                            <div class="row">
+                                <div class="input-group">
+                                    <label>QR Size</label>
+                                    <div class="input-wrapper">
+                                        <select id="qrSize">
+                                            <option value="128">Small (128px)</option>
+                                            <option value="256" selected>Medium (256px)</option>
+                                            <option value="512">Large (512px)</option>
+                                            <option value="1024">HD (1024px)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="input-group">
+                                    <label>Error Correction</label>
+                                    <div class="input-wrapper">
+                                        <select id="qrEcl">
+                                            <option value="L">Low (7%)</option>
+                                            <option value="M" selected>Medium (15%)</option>
+                                            <option value="Q">Quartile (25%)</option>
+                                            <option value="H">High (30%)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Result -->
+                    <div class="preview-sidebar">
+                        <div class="qr-preview-card">
+                            <div id="qrcode"></div>
+                            <button class="btn-main" id="downloadBtn">
+                                <span>⬇️</span> Download PNG
+                            </button>
+                            <button class="btn-outline" id="resetBtn">Reset All Inputs</button>
+                            
+                            <p style="margin-top: 1.5rem; font-size: 0.75rem; color: var(--slate-400); font-weight: 600;">Live Preview - Updates as you type</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tools-section">
+            <div class="container">
+                <div class="tools-header">
+                    <h2>Advanced Formatting</h2>
+                    <p style="color: var(--slate-500);">Our engine supports industry-standard protocols for maximum compatibility.</p>
+                </div>
+                <div class="tools-grid">
+                    <div class="tool-card">
+                        <span class="icon">🛡️</span>
+                        <h3>Privacy First</h3>
+                        <p>No data ever leaves your browser. All generation happens locally via JavaScript.</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="icon">⚡</span>
+                        <h3>Real-time Engine</h3>
+                        <p>Optimized algorithms ensure zero-lag updates as you configure your QR code.</p>
+                    </div>
+                    <div class="tool-card">
+                        <span class="icon">💎</span>
+                        <h3>HD Quality</h3>
+                        <p>Export up to 1024px resolution, suitable for high-quality printing and billboards.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-area">
+            <div class="container">
+                <h2>Why Use Professional QR Codes?</h2>
+                <p>QR codes (Quick Response codes) have become a standard in the digital-physical bridge. Whether you're sharing a business card (vCard), setting up an automated payment gateway (UPI), or simplifying guest WiFi access, a well-formatted QR code ensures a 100% scan success rate.</p>
+                
+                <h2>Technical Specifications</h2>
+                <p>QRPro Studio uses the <b>ISO/IEC 18004</b> standard. We support all four levels of Reed-Solomon Error Correction, allowing your QR codes to remain scanable even if they are partially obscured or damaged. Our WiFi formatting follows the standard <code>WIFI:S:ssid;T:type;P:password;;</code> protocol compatible with both iOS and Android.</p>
+            </div>
+        </section>
+    </main>
+
+   <!-- Footer -->
+    <div id="footer"></div>
+
+    <script>
+        // --- State Management ---
+        let currentType = 'url';
+        let qr = null;
+
+        // --- Configuration Mapping ---
+        const formConfig = {
+            url: `
+                <div class="input-group">
+                    <label>Website URL</label>
+                    <div class="input-wrapper"><input type="url" id="val_url" placeholder="https://example.com" value="https://google.com"></div>
+                </div>
+            `,
+            wifi: `
+                <div class="input-group">
+                    <label>Network SSID (Name)</label>
+                    <div class="input-wrapper"><input type="text" id="val_ssid" placeholder="My Home WiFi"></div>
+                </div>
+                <div class="row">
+                    <div class="input-group">
+                        <label>Security Type</label>
+                        <div class="input-wrapper">
+                            <select id="val_enc">
+                                <option value="WPA">WPA/WPA2</option>
+                                <option value="WEP">WEP</option>
+                                <option value="nopass">None</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Password</label>
+                        <div class="input-wrapper"><input type="password" id="val_pass" placeholder="Password"></div>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label class="check-group">
+                        <input type="checkbox" id="val_hidden">
+                        <span>Hidden Network</span>
+                    </label>
+                </div>
+            `,
+            vcard: `
+                <div class="row">
+                    <div class="input-group"><label>Full Name</label><div class="input-wrapper"><input type="text" id="v_name" placeholder="John Doe"></div></div>
+                    <div class="input-group"><label>Job Title</label><div class="input-wrapper"><input type="text" id="v_title" placeholder="Manager"></div></div>
+                </div>
+                <div class="row">
+                    <div class="input-group"><label>Mobile</label><div class="input-wrapper"><input type="tel" id="v_phone" placeholder="+1234567890"></div></div>
+                    <div class="input-group"><label>Email</label><div class="input-wrapper"><input type="email" id="v_email" placeholder="john@company.com"></div></div>
+                </div>
+                <div class="input-group"><label>Company Name</label><div class="input-wrapper"><input type="text" id="v_org" placeholder="Acme Inc."></div></div>
+                <div class="input-group"><label>Website</label><div class="input-wrapper"><input type="url" id="v_url" placeholder="https://company.com"></div></div>
+            `,
+            email: `
+                <div class="input-group"><label>Recipient Email</label><div class="input-wrapper"><input type="email" id="e_to" placeholder="hello@example.com"></div></div>
+                <div class="input-group"><label>Subject</label><div class="input-wrapper"><input type="text" id="e_sub" placeholder="Inquiry"></div></div>
+                <div class="input-group"><label>Message</label><div class="input-wrapper"><textarea id="e_body" placeholder="Message details..."></textarea></div></div>
+            `,
+            sms: `
+                <div class="input-group"><label>Phone Number</label><div class="input-wrapper"><input type="tel" id="s_phone" placeholder="+1234567890"></div></div>
+                <div class="input-group"><label>Message Text</label><div class="input-wrapper"><textarea id="s_body" placeholder="Hi there!"></textarea></div></div>
+            `,
+            whatsapp: `
+                <div class="input-group"><label>WhatsApp Number</label><div class="input-wrapper"><input type="tel" id="w_phone" placeholder="919876543210"></div></div>
+                <div class="input-group"><label>Pre-filled Message</label><div class="input-wrapper"><textarea id="w_body" placeholder="Hello! I'm interested..."></textarea></div></div>
+            `,
+            upi: `
+                <div class="row">
+                    <div class="input-group"><label>UPI ID (VPA)</label><div class="input-wrapper"><input type="text" id="u_id" placeholder="name@bank"></div></div>
+                    <div class="input-group"><label>Payee Name</label><div class="input-wrapper"><input type="text" id="u_name" placeholder="John Doe"></div></div>
+                </div>
+                <div class="row">
+                    <div class="input-group"><label>Amount (Optional)</label><div class="input-wrapper"><input type="number" id="u_amt" placeholder="0.00"></div></div>
+                    <div class="input-group"><label>Remark / Note</label><div class="input-wrapper"><input type="text" id="u_note" placeholder="Payment for services"></div></div>
+                </div>
+            `,
+            event: `
+                <div class="input-group"><label>Event Name</label><div class="input-wrapper"><input type="text" id="ev_name" placeholder="Team Meeting"></div></div>
+                <div class="row">
+                    <div class="input-group"><label>Start Date/Time</label><div class="input-wrapper"><input type="datetime-local" id="ev_start"></div></div>
+                    <div class="input-group"><label>End Date/Time</label><div class="input-wrapper"><input type="datetime-local" id="ev_end"></div></div>
+                </div>
+                <div class="input-group"><label>Location</label><div class="input-wrapper"><input type="text" id="ev_loc" placeholder="Zoom / Office"></div></div>
+                <div class="input-group"><label>Description</label><div class="input-wrapper"><textarea id="ev_desc" placeholder="Agenda items..."></textarea></div></div>
+            `,
+            text: `
+                <div class="input-group">
+                    <label>Plain Text Content</label>
+                    <div class="input-wrapper"><textarea id="val_text" placeholder="Write any message here..."></textarea></div>
+                </div>
+            `,
+            phone: `
+                <div class="input-group">
+                    <label>Dial Number</label>
+                    <div class="input-wrapper"><input type="tel" id="val_tel" placeholder="+1234567890"></div>
+                </div>
+            `,
+            geo: `
+                <div class="row">
+                    <div class="input-group"><label>Latitude</label><div class="input-wrapper"><input type="number" step="any" id="g_lat" placeholder="37.7749"></div></div>
+                    <div class="input-group"><label>Longitude</label><div class="input-wrapper"><input type="number" step="any" id="g_lon" placeholder="-122.4194"></div></div>
+                </div>
+                <button class="btn-outline" style="margin-top:0" id="btn_geo_current">📍 Use Current Location</button>
+            `,
+            social: `
+                <div class="input-group">
+                    <label>Platform</label>
+                    <div class="input-wrapper">
+                        <select id="soc_plat">
+                            <option value="instagram">Instagram</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="twitter">X (Twitter)</option>
+                            <option value="youtube">YouTube</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label>Username / Profile ID</label>
+                    <div class="input-wrapper"><input type="text" id="soc_user" placeholder="username"></div>
+                </div>
+            `
+        };
+
+        // --- Core Functions ---
+
+        function init() {
+            renderForm('url');
+            
+            // Event Delegation for Type Buttons
+            document.getElementById('typeSelector').addEventListener('click', (e) => {
+                const btn = e.target.closest('.type-btn');
+                if (!btn) return;
+                
+                document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                renderForm(btn.dataset.type);
+            });
+
+            // Config listeners
+            document.getElementById('qrSize').addEventListener('change', generateQR);
+            document.getElementById('qrEcl').addEventListener('change', generateQR);
+
+            // Download
+            document.getElementById('downloadBtn').addEventListener('click', downloadQR);
+
+            // Reset
+            document.getElementById('resetBtn').addEventListener('click', () => {
+                const inputs = document.querySelectorAll('#dynamicForm input, #dynamicForm textarea');
+                inputs.forEach(i => i.value = '');
+                generateQR();
+            });
+
+            generateQR();
+        }
+
+        function renderForm(type) {
+            currentType = type;
+            const container = document.getElementById('dynamicForm');
+            container.innerHTML = formConfig[type];
+
+            // Attach listeners to all new inputs
+            const inputs = container.querySelectorAll('input, select, textarea');
+            inputs.forEach(i => {
+                i.addEventListener('input', generateQR);
+                i.addEventListener('change', generateQR);
+            });
+
+            // Special handling for Location
+            if (type === 'geo') {
+                document.getElementById('btn_geo_current').addEventListener('click', () => {
+                    navigator.geolocation.getCurrentPosition((pos) => {
+                        document.getElementById('g_lat').value = pos.coords.latitude.toFixed(6);
+                        document.getElementById('g_lon').value = pos.coords.longitude.toFixed(6);
+                        generateQR();
+                    });
+                });
+            }
+
+            generateQR();
+        }
+
+        function generateQR() {
+            const dataString = constructDataString();
+            if (!dataString) return;
+
+            const size = parseInt(document.getElementById('qrSize').value);
+            const ecl = document.getElementById('qrEcl').value;
+
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = ''; // Clear
+
+            qr = new QRCode(qrContainer, {
+                text: dataString,
+                width: size,
+                height: size,
+                colorDark : "#0f172a",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel[ecl]
+            });
+        }
+
+        function constructDataString() {
+            try {
+                switch(currentType) {
+                    case 'url':
+                        return document.getElementById('val_url').value || 'https://google.com';
+                    case 'wifi':
+                        const s = document.getElementById('val_ssid').value || 'SSID';
+                        const p = document.getElementById('val_pass').value || '';
+                        const t = document.getElementById('val_enc').value;
+                        const h = document.getElementById('val_hidden').checked ? 'H:true;' : '';
+                        return `WIFI:S:${s};T:${t};P:${p};${h};`;
+                    case 'vcard':
+                        const vName = document.getElementById('v_name').value || 'Name';
+                        const vTitle = document.getElementById('v_title').value || '';
+                        const vPhone = document.getElementById('v_phone').value || '';
+                        const vEmail = document.getElementById('v_email').value || '';
+                        const vOrg = document.getElementById('v_org').value || '';
+                        const vUrl = document.getElementById('v_url').value || '';
+                        return `BEGIN:VCARD\nVERSION:3.0\nFN:${vName}\nTITLE:${vTitle}\nTEL:${vPhone}\nEMAIL:${vEmail}\nORG:${vOrg}\nURL:${vUrl}\nEND:VCARD`;
+                    case 'email':
+                        const eTo = document.getElementById('e_to').value || '';
+                        const eSub = encodeURIComponent(document.getElementById('e_sub').value || '');
+                        const eBody = encodeURIComponent(document.getElementById('e_body').value || '');
+                        return `mailto:${eTo}?subject=${eSub}&body=${eBody}`;
+                    case 'sms':
+                        const sPh = document.getElementById('s_phone').value || '';
+                        const sBody = document.getElementById('s_body').value || '';
+                        return `SMSTO:${sPh}:${sBody}`;
+                    case 'whatsapp':
+                        const wPh = document.getElementById('w_phone').value.replace(/\+/g, '') || '';
+                        const wBody = encodeURIComponent(document.getElementById('w_body').value || '');
+                        return `https://wa.me/${wPh}?text=${wBody}`;
+                    case 'upi':
+                        const uId = document.getElementById('u_id').value || '';
+                        const uNm = encodeURIComponent(document.getElementById('u_name').value || '');
+                        const uAm = document.getElementById('u_amt').value || '';
+                        const uNo = encodeURIComponent(document.getElementById('u_note').value || '');
+                        return `upi://pay?pa=${uId}&pn=${uNm}&am=${uAm}&cu=INR&tn=${uNo}`;
+                    case 'event':
+                        const evN = document.getElementById('ev_name').value || 'Event';
+                        const evS = document.getElementById('ev_start').value.replace(/[-:]/g, '') || '';
+                        const evE = document.getElementById('ev_end').value.replace(/[-:]/g, '') || '';
+                        const evL = document.getElementById('ev_loc').value || '';
+                        const evD = document.getElementById('ev_desc').value || '';
+                        return `BEGIN:VEVENT\nSUMMARY:${evN}\nDTSTART:${evS}\nDTEND:${evE}\nLOCATION:${evL}\nDESCRIPTION:${evD}\nEND:VEVENT`;
+                    case 'text':
+                        return document.getElementById('val_text').value || 'Hello';
+                    case 'phone':
+                        return `tel:${document.getElementById('val_tel').value || ''}`;
+                    case 'geo':
+                        const lat = document.getElementById('g_lat').value || '0';
+                        const lon = document.getElementById('g_lon').value || '0';
+                        return `geo:${lat},${lon}`;
+                    case 'social':
+                        const plat = document.getElementById('soc_plat').value;
+                        const user = document.getElementById('soc_user').value || 'username';
+                        if(plat === 'instagram') return `https://instagram.com/${user}`;
+                        if(plat === 'facebook') return `https://facebook.com/${user}`;
+                        if(plat === 'twitter') return `https://x.com/${user}`;
+                        if(plat === 'youtube') return `https://youtube.com/@${user}`;
+                        return user;
+                }
+            } catch (e) {
+                return 'error';
+            }
+        }
+
+        function downloadQR() {
+            const canvas = document.querySelector('#qrcode canvas');
+            if(!canvas) return;
+            
+            const link = document.createElement('a');
+            link.download = `QRPro-${currentType}-${Date.now()}.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+
+
+
+<!-- js for navbar and footer -->
+ <script>
+fetch("/include/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+  });
+
+fetch("/include/footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
+</script>
+
+
+<script>
+document.addEventListener("click", function (e) {
+
+  /* =========================
+     MOBILE MENU OPEN
+  ========================== */
+  if (e.target.closest("#openMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  /* =========================
+     MOBILE MENU CLOSE
+  ========================== */
+  if (e.target.closest("#closeMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
+
+  /* =========================
+     MOBILE CATEGORIES DROPDOWN
+     (MATCHES YOUR navbar.html)
+  ========================== */
+  if (e.target.closest("#mobileCatToggle")) {
+    const dropdown = document.getElementById("mobileDropdown");
+    if (dropdown) {
+      dropdown.classList.toggle("active");
+    }
+  }
+
+});
+
+// page navigation with fade effect
+document.addEventListener("click", function (e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href) return;
+
+  // ❌ hash links ignore ( #popular , /index.html#popular )
+  if (href.includes("#")) return;
+
+  // ❌ new tab links ignore
+  if (link.hasAttribute("target")) return;
+
+  // ❌ external links ignore
+  if (link.origin !== location.origin) return;
+
+  // ❌ empty / js links ignore
+  if (href === "#" || href.startsWith("javascript")) return;
+
+  // ✅ real page navigation only
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 120);
+});
+</script>
+
+
+</body>
+</html>

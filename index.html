@@ -1,0 +1,664 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Toolify | Free Online Utilities - Fast, Secure & Professional</title>
+    <meta name="description" content="Professional suite of 100+ free online tools. Fast, secure, and fully responsive.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%234f46e5%22/><text y=%22.75em%22 x=%22.15em%22 font-size=%2270%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22900%22>T</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-dark: #3730a3;
+            --primary-light: #6366f1;
+            --primary-soft: rgba(79, 70, 229, 0.08);
+            --secondary: #f43f5e;
+            --dark: #0f172a;
+            --dark-surface: #1e293b;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 80px;
+        }
+
+        /* Base Setup */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 1240px; 
+            margin: 0 auto; 
+            padding: 0 1.5rem;
+        }
+        
+        /* Header & Navbar */
+        .header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            height: var(--header-height); display: flex; align-items: center;
+            transition: var(--transition); background: transparent;
+        }
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            height: 70px;
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Modern Logo Styling */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.8rem; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        .logo-box { 
+            background: var(--primary); 
+            color: white; 
+            width: 38px; 
+            height: 38px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 10px; 
+            font-style: normal;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-box svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .logo span { color: var(--primary); transition: var(--transition); }
+        
+        /* Logo Hover Animation */
+        .logo:hover .logo-box {
+            transform: rotate(10deg) scale(1.1);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        }
+        .logo:hover span {
+            color: var(--secondary);
+            margin-left: 2px;
+        }
+
+        .nav-links { display: none; gap: 2rem; list-style: none; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { 
+            font-weight: 700; font-size: 0.95rem; color: var(--slate-600); text-decoration: none;
+            padding: 10px 0; transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .nav-link:hover { color: var(--primary); }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: white; min-width: 220px; border-radius: 16px; padding: 1rem;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--slate-200);
+            opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-item {
+            padding: 0.8rem 1rem; text-decoration: none; color: var(--slate-600); font-weight: 600;
+            display: block; border-radius: 8px; transition: var(--transition); font-size: 0.9rem;
+        }
+        .dropdown-item:hover { background: var(--slate-100); color: var(--primary); padding-left: 1.2rem; }
+
+        /* Start Now Button Fix */
+        .btn-cta {
+            background: var(--dark); color: white; padding: 0.75rem 1.8rem;
+            border-radius: 100px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; transition: var(--transition); border: 2px solid var(--dark);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-cta:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .mobile-toggle { display: flex; padding: 0.6rem; background: var(--slate-100); border: none; border-radius: 12px; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 1024px) {
+            .nav-links { display: flex; }
+            .mobile-toggle { display: none; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; inset: 0; background: white; z-index: 2000;
+            padding: 2rem; transform: translateX(100%); transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+        .mobile-nav-link { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); display: flex; align-items: center; justify-content: space-between; }
+        .mobile-dropdown { padding-left: 1.5rem; margin-top: 0.5rem; display: none; flex-direction: column; gap: 0.8rem; border-left: 2px solid var(--slate-200); }
+        .mobile-dropdown.active { display: flex; }
+        .mobile-dropdown-item { font-size: 1.1rem; text-decoration: none; color: var(--slate-500); font-weight: 600; }
+
+        /* Hero Section */
+        .hero { 
+            min-height: 100vh;
+            display: flex; align-items: center; justify-content: center;
+            padding: calc(var(--header-height) + 2rem) 0 12rem;
+            text-align: center;
+            background: radial-gradient(circle at 70% 20%, rgba(79, 70, 229, 0.08), transparent),
+                        radial-gradient(circle at 20% 80%, rgba(244, 63, 94, 0.08), transparent);
+            overflow: hidden;
+            position: relative;
+        }
+        .hero-content { position: relative; z-index: 2; width: 100%; max-width: 900px; }
+        .hero-badge { 
+            display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1.2rem;
+            background: var(--white); border: 1px solid var(--slate-200); border-radius: 100px;
+            font-size: 0.8rem; font-weight: 800; color: var(--primary); margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm); animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .animated-text {
+            font-size: clamp(2.5rem, 8vw, 4.5rem); font-weight: 800; line-height: 1.1; 
+            letter-spacing: -0.04em; margin-bottom: 1.5rem;
+            animation: textFloat 4s ease-in-out infinite;
+            display: block;
+        }
+        @keyframes textFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .text-gradient { 
+            background: linear-gradient(135deg, var(--primary), var(--secondary)); 
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; 
+        }
+        
+        .hero-desc { 
+            font-size: 1.2rem; color: var(--slate-500); max-width: 650px; 
+            margin: 0 auto 2.5rem; font-weight: 500; 
+            animation: fadeInUp 1s ease forwards; animation-delay: 0.2s; opacity: 0;
+        }
+        
+        .hero-btns { 
+            display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;
+            animation: fadeInUp 1.2s ease forwards; animation-delay: 0.4s; opacity: 0;
+            margin-bottom: 2rem;
+        }
+        .hero-btn {
+            padding: 1.1rem 2.8rem; border-radius: 100px; font-weight: 800; font-size: 1rem;
+            text-decoration: none; transition: var(--transition); display: flex; align-items: center; gap: 0.8rem;
+            border: 2px solid transparent;
+        }
+        .hero-btn-primary { 
+            background: var(--primary); color: white; 
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15); 
+        }
+        .hero-btn-primary:hover { 
+            transform: translateY(-3px); 
+            box-shadow: 0 12px 25px rgba(79, 70, 229, 0.25); 
+        }
+        .hero-btn-secondary { 
+            background: var(--white); color: var(--dark); 
+            border: 2px solid var(--slate-200); 
+        }
+        .hero-btn-secondary:hover { 
+            border-color: var(--primary); 
+            color: var(--primary); 
+            transform: translateY(-3px);
+            background: var(--white);
+        }
+
+        /* Sections */
+        .section { padding: 8rem 0; }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header h2 { font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 1rem; }
+        .section-header p { color: var(--slate-500); font-weight: 500; font-size: 1.1rem; }
+
+        /* Categories Grid */
+        .cat-grid { display: grid; gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+        .cat-card {
+            background: var(--white); padding: 3rem; border-radius: 2rem;
+            border: 1px solid var(--slate-200); transition: var(--transition);
+            display: flex; flex-direction: column; cursor: pointer;
+        }
+        .cat-card:hover { transform: translateY(-8px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .cat-icon { font-size: 2.5rem; width: 72px; height: 72px; background: var(--slate-50); border-radius: 20px; display: flex; align-items: center; justify-content: center; margin-bottom: 2rem; transition: var(--transition); }
+        .cat-card:hover .cat-icon { background: var(--primary-soft); color: var(--primary); transform: scale(1.05); }
+        .cat-card h3 { font-size: 1.8rem; font-weight: 800; margin-bottom: 1rem; letter-spacing: -0.02em; }
+        .cat-card p { color: var(--slate-500); font-size: 1rem; margin-bottom: 2rem; flex-grow: 1; }
+        
+        .capsule-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
+            padding: 0.9rem 2.2rem; border-radius: 100px; background: var(--dark); color: white;
+            font-weight: 700; font-size: 0.95rem; text-decoration: none; transition: var(--transition);
+            border: 2px solid var(--dark);
+        }
+        .capsule-btn:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        /* Popular Tools Grid */
+        .popular-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+        .tool-small-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1.25rem;
+            border: 1px solid var(--slate-200);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 700;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+        .tool-small-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow-md);
+            color: var(--primary);
+        }
+        .tool-small-icon {
+            width: 44px; height: 44px;
+            background: var(--slate-100);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.25rem;
+            transition: var(--transition);
+        }
+
+        /* Simple 'Why Choose Us' */
+        .section-why { 
+            padding: 10rem 0; 
+            background: var(--white); 
+            border-top: 1px solid var(--slate-100);
+        }
+        .why-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+        }
+        .why-item {
+            text-align: center;
+            padding: 2rem;
+        }
+        .why-item-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            color: var(--primary);
+        }
+        .why-item h4 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+        .why-item p {
+            color: var(--slate-500);
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        /* Footer */
+        .footer { background: #020617; color: white; padding: 6rem 0 4rem; position: relative; }
+        .footer-grid { display: grid; gap: 4rem; grid-template-columns: 1fr; margin-bottom: 5rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        
+        .footer-brand p { color: var(--slate-400); font-size: 1rem; margin-top: 1.5rem; max-width: 350px; line-height: 1.8; }
+        .footer-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 0.15em; margin-bottom: 2rem; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--slate-400); text-decoration: none; font-size: 1rem; font-weight: 600; transition: var(--transition); }
+        .footer-links a:hover { color: white; transform: translateX(8px); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-5px); border-color: var(--primary); }
+
+        /* Animation utilities */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 100px 0 40px; min-height: auto; }
+            .hero-btns { flex-direction: column; align-items: stretch; padding: 0 1.5rem; }
+            .section { padding: 4rem 0; }
+        }
+
+        /* page navigation */
+ body {
+  opacity: 1;
+  transition: opacity 0.18s ease; /* short */
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: #ffffff;           /*  solid background */
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.header.scrolled {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+/* smooth navigation transition */
+body {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+        
+    </style>
+</head>
+<body>
+
+   
+
+    <!-- Navbar -->
+   <div id="navbar"></div>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero" id="home">
+            <div class="container hero-content">
+                <div class="hero-badge">
+                    <span>⚡</span> 100+ Pro Tools • 100% Free
+                </div>
+                <h1 class="animated-text">
+                    Professional Tools for<br><span class="text-gradient">Modern Creators.</span>
+                </h1>
+                <p class="hero-desc">Toolify is an all-in-one browser-based platform for high-quality image processing, secure PDF tools, and intelligent text formatting. Fast, reliable, and completely private online tools for everyday use.</p>
+                
+                <div class="hero-btns">
+                    <a href="/Tools/tools.html" class="hero-btn hero-btn-primary">
+                        Browse All Suites
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12h14m-7-7 7 7-7 7"/></svg>
+                    </a>
+                    <a href="#popular" class="hero-btn hero-btn-secondary">
+                        Popular Utilities
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories Section -->
+        <section class="section" id="categories" style="background: var(--white); border-top: 1px solid var(--slate-100);">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2>Explore Specialized Suites</h2>
+                    <p>High-utility collections designed to supercharge your digital workflow.</p>
+                </div>
+                <div class="cat-grid" id="catContainer">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Section -->
+        <section class="section" id="popular">
+            <div class="container reveal">
+                <div class="section-header">
+                    <h2>Community Favorites</h2>
+                    <p>Fast access to our most frequently used professional utilities.</p>
+                </div>
+                <div class="popular-grid" id="popContainer">
+                    <!-- Dynamic Content -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Simple 'Why Choose Us' -->
+        <section class="section-why" id="why">
+            <div class="container">
+                <div class="section-header reveal">
+                    <h2>Why Choose Toolify?</h2>
+                    <p>The standard for private, fast, and professional online utilities.</p>
+                </div>
+                
+                <div class="why-grid reveal">
+                    <div class="why-item">
+                        <div class="why-item-icon">🔒</div>
+                        <h4>100% Private</h4>
+                        <p>Your data never leaves your browser. No server uploads means your privacy is guaranteed by design.</p>
+                    </div>
+                    <div class="why-item">
+                        <div class="why-item-icon">⚡</div>
+                        <h4>Lightning Speed</h4>
+                        <p>No waiting for network transfers. Processing happens instantly on your device's hardware.</p>
+                    </div>
+                    <div class="why-item">
+                        <div class="why-item-icon">💎</div>
+                        <h4>Pro Features</h4>
+                        <p>Clean, minimal interface without annoying ads. Professional tools for serious creators.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+   <!-- Footer -->
+    <div id="footer"></div>
+
+
+    <script>
+        /**
+         * Content Data
+         */
+        const DATA = {
+            categories: [
+                { title: "Text Tools", icon: "✍️", desc: "Word counters, case converters, and professional formatting utilities for writers.", link: "/tools/tools.html?category=Text" },
+                { title: "Calculators", icon: "🧮", desc: "Financial, mathematical, and health calculators with instant results.", link: "/tools/tools.html?category=Calculator" },
+                { title: "Img Tools", icon: "🖼️", desc: "Lossless compression, format conversion, and bulk resizing for designers.", link: "/tools/tools.html?category=Image" },
+                { title: "PDF Tools", icon: "📄", desc: "Merge, split, compress, and edit PDFs directly in your browser with bank-grade security.", link: "/tools/tools.html?category=Document" },
+                { title: "Fun Tools", icon: "🚀", desc: "Random generators, QR code creators, and viral social media utilities.", link: "/tools/tools.html?category=Fun" },
+                { title: "Utilities Hub", icon: "🛠️", desc: "All-in-one general utilities, encoders, formatters, and handy miscellaneous tools.", link: "/tools/tools.html?category=Utilities" }
+            ],
+            popular: [
+                { title: "Age Calculator", icon: "📅", link: "/tools/Calculators/Age_calculator.html" },
+                { title: "Image Compressor", icon: "📉", link: "/tools/Image Tools/Image_compressor.html" },
+                 { title: "Love Calculator", icon: "❤️", link: "/tools/Fun Tools/Love_Calculator.html" },
+                { title: "Word Counter", icon: "📝", link: "/tools/Text Tools/Text_Editor.html" },
+                { title: "Case Converter", icon: "Aa", link: " /tools/Text Tools/Text_Editor.html" },
+                { title: "PDF Merger", icon: "🔗", link: "/tools/PDF Tools/PDF_Merger.html" },
+                { title: "BMI Calculator", icon: "⚖️", link: "/tools/Calculators/BMI_calculator.html" },
+                { title: "QR Generator", icon: "🔳", link: "/tools/Utilities/QR_Generator.html" },
+                { title: "EMI Calculator", icon: "💰", link: "/tools/Calculators/Loan_EMI_calculator.html" }
+            ]
+        };
+
+        const renderContent = () => {
+            const catBox = document.getElementById('catContainer');
+            const popBox = document.getElementById('popContainer');
+
+            catBox.innerHTML = DATA.categories.map(cat => `
+                <div class="cat-card reveal">
+                    <div class="cat-icon">${cat.icon}</div>
+                    <h3>${cat.title}</h3>
+                    <p>${cat.desc}</p>
+                    <a href="${cat.link}" class="capsule-btn">Explore Suite</a>
+                </div>
+            `).join('');
+
+            popBox.innerHTML = DATA.popular.map(tool => `
+                <a href="${tool.link}" class="tool-small-card reveal">
+                    <div class="tool-small-icon">${tool.icon}</div>
+                    <span>${tool.title}</span>
+                </a>
+            `).join('');
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(e => {
+                if (e.isIntersecting) e.target.classList.add('active');
+            });
+        }, { threshold: 0.1 });
+
+       
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderContent();
+            setTimeout(() => {
+                document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+            }, 100);
+        });
+    </script>
+
+    
+     <script>
+  // Navbar
+  fetch("include/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+
+  });
+
+
+  // Footer
+  fetch("include/footer.html")
+    .then(res => res.text())
+    .then(data => {
+      document.getElementById("footer").innerHTML = data;
+    });
+
+
+
+    // Page Navigation Effect
+
+ document.addEventListener("click", function (e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href) return;
+
+  // ❌ hash links ( #popular , /index.html#popular ) ignore
+  if (href.includes("#")) return;
+
+  // ❌ new tab links ignore
+  if (link.hasAttribute("target")) return;
+
+  // ❌ external links ignore
+  if (link.origin !== location.origin) return;
+
+  // ❌ empty / js links ignore
+  if (href === "#" || href.startsWith("javascript")) return;
+
+  // ✅ REAL page change only
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 120);
+});
+
+
+</script>
+
+<script>
+document.addEventListener("click", function (e) {
+
+  /* =========================
+     MOBILE MENU OPEN
+  ========================== */
+  if (e.target.closest("#openMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  /* =========================
+     MOBILE MENU CLOSE
+  ========================== */
+  if (e.target.closest("#closeMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
+
+  /* =========================
+     MOBILE CATEGORIES DROPDOWN
+     (MATCHES YOUR navbar.html)
+  ========================== */
+  if (e.target.closest("#mobileCatToggle")) {
+    const dropdown = document.getElementById("mobileDropdown");
+    if (dropdown) {
+      dropdown.classList.toggle("active");
+    }
+  }
+
+});
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted) {
+    window.location.reload();
+  }
+});
+</script>
+
+
+</body>
+</html>

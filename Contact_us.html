@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Contact Us – Toolix | Smart Online Tools Support</title>
+    <meta name="description" content="Contact Toolix for support, feedback, or queries related to smart online calculators and AI utility tools. We are here to help you with our utility tools.">
+    <meta name="keywords" content="Toolix contact, support, feedback, online tools help, AI tools support">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://toolix.com/contact">
+
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Contact Us – Toolix">
+    <meta property="og:description" content="Get in touch with the Toolix team for any queries regarding our calculators and utility tools.">
+    <meta property="og:type" content="website">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%234f46e5%22/><text y=%22.75em%22 x=%22.15em%22 font-size=%2270%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22900%22>T</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-soft: rgba(79, 70, 229, 0.08);
+            --success: #10b981;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --dark-surface: #1e293b;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 72px;
+        }
+
+        /* Reset & Base */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--dark);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 1.5rem; 
+        }
+
+        /* header */
+.header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            height: var(--header-height); display: flex; align-items: center;
+            transition: var(--transition); background: transparent;
+        }
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            height: 70px;
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Modern Logo Styling */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.8rem; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        .logo-box { 
+            background: var(--primary); 
+            color: white; 
+            width: 38px; 
+            height: 38px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 10px; 
+            font-style: normal;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-box svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .logo span { color: var(--primary); transition: var(--transition); }
+        
+        /* Logo Hover Animation */
+        .logo:hover .logo-box {
+            transform: rotate(10deg) scale(1.1);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        }
+        .logo:hover span {
+            color: var(--secondary);
+            margin-left: 2px;
+        }
+
+        .nav-links { display: none; gap: 2rem; list-style: none; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { 
+            font-weight: 700; font-size: 0.95rem; color: var(--slate-600); text-decoration: none;
+            padding: 10px 0; transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .nav-link:hover { color: var(--primary); }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: white; min-width: 220px; border-radius: 16px; padding: 1rem;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--slate-200);
+            opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-item {
+            padding: 0.8rem 1rem; text-decoration: none; color: var(--slate-600); font-weight: 600;
+            display: block; border-radius: 8px; transition: var(--transition); font-size: 0.9rem;
+        }
+        .dropdown-item:hover { background: var(--slate-100); color: var(--primary); padding-left: 1.2rem; }
+
+        /* Start Now Button Fix */
+        .btn-cta {
+            background: var(--dark); color: white; padding: 0.75rem 1.8rem;
+            border-radius: 100px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; transition: var(--transition); border: 2px solid var(--dark);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-cta:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .mobile-toggle { display: flex; padding: 0.6rem; background: var(--slate-100); border: none; border-radius: 12px; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 1024px) {
+            .nav-links { display: flex; }
+            .mobile-toggle { display: none; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; inset: 0; background: white; z-index: 2000;
+            padding: 2rem; transform: translateX(100%); transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+        .mobile-nav-link { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); display: flex; align-items: center; justify-content: space-between; }
+        .mobile-dropdown { padding-left: 1.5rem; margin-top: 0.5rem; display: none; flex-direction: column; gap: 0.8rem; border-left: 2px solid var(--slate-200); }
+        .mobile-dropdown.active { display: flex; }
+        .mobile-dropdown-item { font-size: 1.1rem; text-decoration: none; color: var(--slate-500); font-weight: 600; }
+
+        /* Hero */
+        .hero { 
+            padding-top: calc(var(--header-height) + 4rem); 
+            padding-bottom: 3rem;
+            text-align: center;
+        }
+        .hero h1 { 
+            font-size: clamp(2.5rem, 8vw, 3.5rem); 
+            font-weight: 800; 
+            letter-spacing: -0.04em; 
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+        .hero p {
+            color: var(--slate-500);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Contact Grid */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 3rem;
+            margin-bottom: 5rem;
+            align-items: start;
+        }
+
+        /* Info Section */
+        .info-card {
+            padding: 2rem;
+            background: var(--white);
+            border-radius: 1.5rem;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .info-card h2 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+        }
+        .info-item {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .info-icon {
+            width: 48px;
+            height: 48px;
+            background: var(--primary-soft);
+            color: var(--primary);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+        }
+        .info-text h3 { font-size: 1rem; font-weight: 700; color: var(--dark); margin-bottom: 0.2rem; }
+        .info-text p { font-size: 0.95rem; color: var(--slate-500); }
+
+        /* Form Styling */
+        .form-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 2rem;
+            border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-lg);
+        }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-label {
+            display: block;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark-surface);
+        }
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+            border: 1px solid var(--slate-200);
+            border-radius: 0.8rem;
+            background: var(--slate-50);
+            transition: var(--transition);
+            outline: none;
+        }
+        .form-control:focus {
+            border-color: var(--primary);
+            background: var(--white);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+        }
+        textarea.form-control { min-height: 150px; resize: vertical; }
+
+        .btn-submit {
+            width: 100%;
+            padding: 1rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 0.8rem;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-submit:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        .btn-submit:disabled {
+            background: var(--slate-300);
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Result Messages */
+        #form-result {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            border-radius: 0.8rem;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: none;
+        }
+        .msg-success { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+        .msg-error { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            display: none;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Footer */
+        .footer { background: #020617; color: white; padding: 6rem 0 4rem; position: relative; }
+        .footer-grid { display: grid; gap: 4rem; grid-template-columns: 1fr; margin-bottom: 5rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        
+        .footer-brand p { color: var(--slate-400); font-size: 1rem; margin-top: 1.5rem; max-width: 350px; line-height: 1.8; }
+        .footer-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 0.15em; margin-bottom: 2rem; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--slate-400); text-decoration: none; font-size: 1rem; font-weight: 600; transition: var(--transition); }
+        .footer-links a:hover { color: white; transform: translateX(8px); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-5px); border-color: var(--primary); }
+
+        /* Animation utilities */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 100px 0 40px; min-height: auto; }
+            .hero-btns { flex-direction: column; align-items: stretch; padding: 0 1.5rem; }
+            .section { padding: 4rem 0; }
+        }
+
+
+        .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: #ffffff;           /*  solid background */
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.header.scrolled {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+/* smooth navigation transition */
+body {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Semantic Header -->
+    <!-- Navbar -->
+   <div id="navbar"></div>
+
+    <main>
+        <article class="container">
+            <!-- Hero Section -->
+            <section class="hero">
+                <h1>Contact Us</h1>
+                <p>Have questions about our smart calculators or AI tools? Our team is here to support you. Drop us a message below.</p>
+            </section>
+
+            <!-- Main Grid Content -->
+            <section class="contact-wrapper">
+                
+                <!-- Left: Info -->
+                <aside class="info-column">
+                    <div class="info-card">
+                        <h2>Get in Touch</h2>
+                        
+                        <div class="info-item">
+                            <div class="info-icon">✉️</div>
+                            <div class="info-text">
+                                <h3>Email Support</h3>
+                                <p>shailendraapi06@gmail.com</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">⚡</div>
+                            <div class="info-text">
+                                <h3>Response Time</h3>
+                                <p>We typically respond within 24 hours.</p>
+                            </div>
+                        </div>
+
+                        <div class="info-item">
+                            <div class="info-icon">📍</div>
+                            <div class="info-text">
+                                <h3>Location</h3>
+                                <p>Global Support based in India</p>
+                            </div>
+                        </div>
+
+                        <div style="margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--slate-100);">
+                            <p style="font-size: 0.85rem; color: var(--slate-400); font-weight: 500;">
+                                Toolix is dedicated to providing high-quality utility tools for developers, students, and professionals worldwide.
+                            </p>
+                        </div>
+                    </div>
+                </aside>
+
+                <!-- Right: Form -->
+                <section class="form-column">
+                    <div class="form-card">
+                        <form id="contactForm">
+                            <!-- Web3Forms Access Key - PLACEMENT HERE -->
+                            <input type="hidden" name="access_key" value="4abfb3e0-18bb-4700-aaa2-446e22cc0dc2">
+                            <input type="hidden" name="from_name" value="Toolix Contact Form">
+                            <input type="checkbox" name="botcheck" style="display: none;">
+
+                            <div class="form-group">
+                                <label for="name" class="form-label">Full Name</label>
+                                <input type="text" name="name" id="name" class="form-control" placeholder="John Snow" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="email" class="form-label">Email Address</label>
+                                <input type="email" name="email" id="email" class="form-control" placeholder="john@example.com" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject" class="form-label">Subject</label>
+                                <input type="text" name="subject" id="subject" class="form-control" placeholder="Feedback / Support / Inquiry">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="message" class="form-label">Message</label>
+                                <textarea name="message" id="message" class="form-control" placeholder="How can we help you?" required></textarea>
+                            </div>
+
+                            <button type="submit" id="submitBtn" class="btn-submit">
+                                <span class="spinner" id="btnSpinner"></span>
+                                <span id="btnText">Send Message</span>
+                            </button>
+
+                            <div id="form-result"></div>
+                        </form>
+                    </div>
+                </section>
+
+            </section>
+        </article>
+    </main>
+
+    <!-- Semantic Footer -->
+    <!-- Footer -->
+    <div id="footer"></div>
+
+
+    <script>
+        // Form Handling Logic
+        const contactForm = document.getElementById('contactForm');
+        const formResult = document.getElementById('form-result');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Check if Access Key is still the placeholder
+            const accessKey = contactForm.querySelector('input[name="access_key"]').value;
+            if (accessKey === 'YOUR_ACCESS_KEY_HERE') {
+                showResult('Error: Access Key is missing. Please add your key in the code.', 'error');
+                return;
+            }
+
+            // UI State: Loading
+            setLoading(true);
+            formResult.style.display = 'none';
+
+            const formData = new FormData(contactForm);
+            const object = Object.fromEntries(formData);
+            const json = JSON.stringify(object);
+
+            fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: json
+            })
+            .then(async (response) => {
+                let res = await response.json();
+                if (response.status == 200) {
+                    showResult('Thank you! Your message has been sent successfully.', 'success');
+                    contactForm.reset();
+                } else {
+                    showResult(res.message || 'Something went wrong. Please try again.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                showResult('Network error. Please check your connection.', 'error');
+            })
+            .finally(() => {
+                setLoading(false);
+            });
+        });
+
+        function setLoading(isLoading) {
+            if (isLoading) {
+                submitBtn.disabled = true;
+                btnText.textContent = 'Sending...';
+                btnSpinner.style.display = 'block';
+            } else {
+                submitBtn.disabled = false;
+                btnText.textContent = 'Send Message';
+                btnSpinner.style.display = 'none';
+            }
+        }
+
+        function showResult(message, type) {
+            formResult.textContent = message;
+            formResult.style.display = 'block';
+            formResult.className = type === 'success' ? 'msg-success' : 'msg-error';
+            
+            // Auto-hide success message after 5 seconds
+            if (type === 'success') {
+                setTimeout(() => {
+                    formResult.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        // Header Scroll Effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 20) {
+                header.style.boxShadow = 'var(--shadow-md)';
+                header.style.background = 'rgba(255, 255, 255, 0.98)';
+            } else {
+                header.style.boxShadow = 'none';
+                header.style.background = 'rgba(255, 255, 255, 0.9)';
+            }
+        });
+    </script>
+
+    <!-- js for navbar and footer -->
+ <script>
+fetch("/include/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+  });
+
+fetch("/include/footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
+</script>
+
+
+<script>
+document.addEventListener("click", function (e) {
+
+  /* =========================
+     MOBILE MENU OPEN
+  ========================== */
+  if (e.target.closest("#openMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  /* =========================
+     MOBILE MENU CLOSE
+  ========================== */
+  if (e.target.closest("#closeMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
+
+  /* =========================
+     MOBILE CATEGORIES DROPDOWN
+     (MATCHES YOUR navbar.html)
+  ========================== */
+  if (e.target.closest("#mobileCatToggle")) {
+    const dropdown = document.getElementById("mobileDropdown");
+    if (dropdown) {
+      dropdown.classList.toggle("active");
+    }
+  }
+
+});
+
+// page navigation with fade effect
+document.addEventListener("click", function (e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href) return;
+
+  // ❌ hash links ignore ( #popular , /index.html#popular )
+  if (href.includes("#")) return;
+
+  // ❌ new tab links ignore
+  if (link.hasAttribute("target")) return;
+
+  // ❌ external links ignore
+  if (link.origin !== location.origin) return;
+
+  // ❌ empty / js links ignore
+  if (href === "#" || href.startsWith("javascript")) return;
+
+  // ✅ real page navigation only
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 120);
+});
+</script>
+
+
+</body>
+</html>

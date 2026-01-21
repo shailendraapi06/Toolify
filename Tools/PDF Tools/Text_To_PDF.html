@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+    <title>Text to PDF Converter – Convert Text into PDF Online | ToolHub Pro</title>
+    <meta name="description" content="Fast and free online Text to PDF converter. Convert your notes, articles, or typed text into a clean, professionally formatted PDF. 100% private, browser-side processing.">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 rx=%2220%22 fill=%22%236366f1%22/><text y=%22.75em%22 x=%22.15em%22 font-size=%2260%22 fill=%22white%22 font-family=%22sans-serif%22 font-weight=%22900%22>TX</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #6366f1;
+            --primary-hover: #4f46e5;
+            --primary-soft: rgba(99, 102, 241, 0.1);
+            --secondary: #10b981;
+            --dark: #0f172a;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --white: #ffffff;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            --header-height: 72px;
+            --radius-lg: 1.5rem;
+            --radius-xl: 2rem;
+        }
+
+        /* Base Setup */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--slate-50);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container { 
+            width: 100%; 
+            max-width: 1100px; 
+            margin: 0 auto; 
+            padding: 0 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .container { padding: 0 2.5rem; }
+        }
+
+        /* SEO Hidden H1 */
+        .seo-h1 { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+
+      /* header */
+.header {
+            position: fixed; top: 0; left: 0; width: 100%; z-index: 1000;
+            height: var(--header-height); display: flex; align-items: center;
+            transition: var(--transition); background: transparent;
+        }
+        .header.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            height: 70px;
+            border-bottom: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-sm);
+        }
+        .nav { width: 100%; display: flex; justify-content: space-between; align-items: center; }
+        
+        /* Modern Logo Styling */
+        .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 0.8rem; 
+            text-decoration: none; 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            color: var(--dark);
+            transition: var(--transition);
+        }
+        .logo-box { 
+            background: var(--primary); 
+            color: white; 
+            width: 38px; 
+            height: 38px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            border-radius: 10px; 
+            font-style: normal;
+            box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-box svg {
+            width: 22px;
+            height: 22px;
+            fill: currentColor;
+        }
+        .logo span { color: var(--primary); transition: var(--transition); }
+        
+        /* Logo Hover Animation */
+        .logo:hover .logo-box {
+            transform: rotate(10deg) scale(1.1);
+            background: var(--primary-dark);
+            box-shadow: 0 6px 15px rgba(79, 70, 229, 0.4);
+        }
+        .logo:hover span {
+            color: var(--secondary);
+            margin-left: 2px;
+        }
+
+        .nav-links { display: none; gap: 2rem; list-style: none; align-items: center; }
+        .nav-item { position: relative; }
+        .nav-link { 
+            font-weight: 700; font-size: 0.95rem; color: var(--slate-600); text-decoration: none;
+            padding: 10px 0; transition: var(--transition); display: flex; align-items: center; gap: 4px;
+        }
+        .nav-link:hover { color: var(--primary); }
+
+        /* Dropdown */
+        .dropdown {
+            position: absolute; top: 100%; left: 50%; transform: translateX(-50%) translateY(10px);
+            background: white; min-width: 220px; border-radius: 16px; padding: 1rem;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--slate-200);
+            opacity: 0; visibility: hidden; transition: var(--transition);
+        }
+        .nav-item:hover .dropdown { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
+        .dropdown-item {
+            padding: 0.8rem 1rem; text-decoration: none; color: var(--slate-600); font-weight: 600;
+            display: block; border-radius: 8px; transition: var(--transition); font-size: 0.9rem;
+        }
+        .dropdown-item:hover { background: var(--slate-100); color: var(--primary); padding-left: 1.2rem; }
+
+        /* Start Now Button Fix */
+        .btn-cta {
+            background: var(--dark); color: white; padding: 0.75rem 1.8rem;
+            border-radius: 100px; font-weight: 700; font-size: 0.9rem;
+            text-decoration: none; transition: var(--transition); border: 2px solid var(--dark);
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .btn-cta:hover { 
+            transform: translateY(-2px); 
+            box-shadow: 0 8px 15px rgba(15, 23, 42, 0.2);
+        }
+
+        .mobile-toggle { display: flex; padding: 0.6rem; background: var(--slate-100); border: none; border-radius: 12px; cursor: pointer; color: var(--dark); }
+
+        @media (min-width: 1024px) {
+            .nav-links { display: flex; }
+            .mobile-toggle { display: none; }
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed; inset: 0; background: white; z-index: 2000;
+            padding: 2rem; transform: translateX(100%); transition: var(--transition);
+            display: flex; flex-direction: column;
+        }
+        .mobile-menu.active { transform: translateX(0); }
+        .mobile-menu-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3rem; }
+        .mobile-nav-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; overflow-y: auto; }
+        .mobile-nav-link { font-size: 1.5rem; font-weight: 800; text-decoration: none; color: var(--dark); display: flex; align-items: center; justify-content: space-between; }
+        .mobile-dropdown { padding-left: 1.5rem; margin-top: 0.5rem; display: none; flex-direction: column; gap: 0.8rem; border-left: 2px solid var(--slate-200); }
+        .mobile-dropdown.active { display: flex; }
+        .mobile-dropdown-item { font-size: 1.1rem; text-decoration: none; color: var(--slate-500); font-weight: 600; }
+
+        /* Hero Section */
+        .hero { padding: calc(var(--header-height) + 3.5rem) 0 3rem; text-align: center; }
+        .hero h1 { font-size: clamp(2.4rem, 8vw, 3.8rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.04em; margin-bottom: 1.5rem; }
+        .hero-desc { font-size: 1.15rem; color: var(--slate-500); max-width: 800px; margin: 0 auto 2.5rem; }
+
+        /* Tool Card Interface */
+        .tool-card {
+            background: var(--white); border-radius: var(--radius-xl); border: 1px solid var(--slate-200);
+            box-shadow: var(--shadow-xl); padding: 1.5rem; margin-bottom: 5rem;
+            transition: var(--transition); text-align: left;
+        }
+        @media (min-width: 768px) { .tool-card { padding: 3rem; } }
+
+        .editor-view { display: flex; flex-direction: column; gap: 2rem; }
+
+        /* Input Area */
+        .text-input-wrapper { display: flex; flex-direction: column; gap: 1rem; }
+        .text-input-wrapper label { font-weight: 800; font-size: 1.1rem; color: var(--dark); }
+        .main-textarea {
+            width: 100%; min-height: 350px; padding: 1.5rem; border-radius: 1.25rem;
+            border: 2px solid var(--slate-200); font-family: inherit; font-size: 1rem;
+            line-height: 1.6; resize: vertical; transition: var(--transition);
+        }
+        .main-textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+
+        /* Settings Bar */
+        .settings-bar {
+            background: var(--slate-100); padding: 1.5rem; border-radius: 1.5rem;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1.5rem;
+            border: 1px solid var(--slate-200);
+        }
+        .setting-item { display: flex; flex-direction: column; gap: 0.75rem; }
+        .setting-item label { font-size: 0.85rem; font-weight: 800; color: var(--slate-500); text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .select-btn {
+            background: var(--white); border: 2px solid var(--slate-200); padding: 0.8rem 1rem;
+            border-radius: 1rem; font-weight: 700; cursor: pointer; transition: var(--transition);
+            font-size: 0.95rem; font-family: inherit;
+        }
+        .select-btn:focus { border-color: var(--primary); outline: none; }
+
+        .toggle-group { display: flex; gap: 0.5rem; }
+        .toggle-btn {
+            flex: 1; padding: 0.8rem; border-radius: 1rem; border: 2px solid var(--slate-200);
+            background: var(--white); font-weight: 800; cursor: pointer; transition: var(--transition);
+            font-size: 0.9rem;
+        }
+        .toggle-btn.active { border-color: var(--primary); background: var(--primary); color: white; }
+
+        /* Progress & Actions */
+        .actions { margin-top: 1rem; display: flex; gap: 1rem; justify-content: center; }
+        @media (max-width: 640px) { .actions { flex-direction: column; } }
+
+        .btn {
+            padding: 1.15rem 2.5rem; border-radius: 1.25rem; font-weight: 800; font-size: 1rem;
+            cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 0.75rem; border: none;
+        }
+        .btn-primary { background: var(--primary); color: white; box-shadow: var(--shadow-lg); width: 100%; max-width: 320px; }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: var(--shadow-xl); background: var(--primary-hover); }
+        .btn-primary:disabled { background: var(--slate-300); cursor: not-allowed; }
+        .btn-outline { background: white; border: 2px solid var(--slate-200); color: var(--dark); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-soft); }
+
+        /* SEO & Content Sections */
+        .section-padding { padding: 6rem 0; }
+        .content-grid { display: grid; gap: 4rem; grid-template-columns: 1fr; }
+        @media (min-width: 1024px) { .content-grid { grid-template-columns: 1fr 1fr; } }
+        .content-block h2 { font-size: 2.25rem; font-weight: 800; margin-bottom: 1.5rem; letter-spacing: -0.04em; }
+        .content-block p { font-size: 1.1rem; color: var(--slate-500); margin-bottom: 1.5rem; line-height: 1.8; }
+
+        .faq-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+        .faq-card { background: white; padding: 2.5rem; border-radius: 1.5rem; border: 1px solid var(--slate-200); box-shadow: var(--shadow-sm); }
+        .faq-card h3 { font-weight: 800; color: var(--primary); margin-bottom: 1rem; }
+
+        .tools-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+        .tool-link-card {
+            background: white; border: 1px solid var(--slate-200); border-radius: 1.5rem; padding: 2rem;
+            text-decoration: none; color: var(--dark); transition: var(--transition); display: flex; flex-direction: column; gap: 1rem;
+        }
+        .tool-link-card:hover { transform: translateY(-5px); border-color: var(--primary); box-shadow: var(--shadow-lg); }
+        .tool-link-card h4 { font-weight: 800; font-size: 1.2rem; }
+        .tool-arrow { color: var(--primary); font-weight: 800; margin-top: auto; }
+
+      /* Footer */
+        .footer { background: #020617; color: white; padding: 6rem 0 4rem; position: relative; }
+        .footer-grid { display: grid; gap: 4rem; grid-template-columns: 1fr; margin-bottom: 5rem; }
+        @media (min-width: 768px) { .footer-grid { grid-template-columns: 2fr 1fr 1fr 1fr; } }
+        
+        .footer-brand p { color: var(--slate-400); font-size: 1rem; margin-top: 1.5rem; max-width: 350px; line-height: 1.8; }
+        .footer-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--primary-light); letter-spacing: 0.15em; margin-bottom: 2rem; }
+        .footer-links { list-style: none; display: flex; flex-direction: column; gap: 1.2rem; }
+        .footer-links a { color: var(--slate-400); text-decoration: none; font-size: 1rem; font-weight: 600; transition: var(--transition); }
+        .footer-links a:hover { color: white; transform: translateX(8px); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.08); padding-top: 3rem; display: flex; flex-direction: column; gap: 2rem; }
+        @media (min-width: 768px) { .footer-bottom { flex-direction: row; justify-content: space-between; align-items: center; } }
+        .social-links { display: flex; gap: 1.5rem; }
+        .social-icon { width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.05); display: flex; align-items: center; justify-content: center; transition: var(--transition); border: 1px solid rgba(255,255,255,0.1); color: white; text-decoration: none; }
+        .social-icon:hover { background: var(--primary); transform: translateY(-5px); border-color: var(--primary); }
+
+        /* Animation utilities */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.6s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
+        @media (max-width: 768px) {
+            .hero { padding: 100px 0 40px; min-height: auto; }
+            .hero-btns { flex-direction: column; align-items: stretch; padding: 0 1.5rem; }
+            .section { padding: 4rem 0; }
+        }
+
+        .hidden { display: none !important; }
+        .badge { background: var(--slate-100); color: var(--slate-500); padding: 0.35rem 0.85rem; border-radius: 100px; font-size: 0.8rem; font-weight: 800; }
+
+        @media (max-width: 768px) {
+            .section-padding { padding: 4rem 0; }
+        }
+
+        .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  z-index: 1000;
+  background: #ffffff;           /*  solid background */
+  border-bottom: 1px solid var(--slate-200);
+}
+
+.header.scrolled {
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+/* smooth navigation transition */
+body {
+  opacity: 1;
+  transition: opacity 0.18s ease;
+}
+
+body.is-leaving {
+  opacity: 0;
+}
+
+    </style>
+</head>
+<body>
+
+    <h1 class="seo-h1">Text to PDF Converter – Create Professional PDFs from Text Online</h1>
+
+    
+    <!-- Navbar -->
+   <div id="navbar"></div>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <div style="display:inline-flex; align-items:center; gap:0.5rem; padding:0.5rem 1.25rem; background:white; border:1px solid var(--slate-200); border-radius:100px; font-size:0.75rem; font-weight:700; color:var(--primary); margin-bottom:1.5rem; box-shadow: var(--shadow-sm);">📄 Secure local generation: No data uploads</div>
+                <h1>Text to <span style="color:var(--primary)">PDF</span> Converter</h1>
+                <p class="hero-desc">Turn your notes, essays, or code into clean, professionally formatted PDF documents. Simply type or paste your text and download instantly.</p>
+                
+                <div class="tool-card">
+                    <div class="editor-view">
+                        <!-- TEXT INPUT AREA -->
+                        <div class="text-input-wrapper">
+                            <label for="textInput">Paste or Type your content below:</label>
+                            <textarea id="textInput" class="main-textarea" placeholder="Start writing your document here..."></textarea>
+                        </div>
+
+                        <!-- FORMATTING BAR -->
+                        <div class="settings-bar">
+                            <div class="setting-item">
+                                <label>Font Size</label>
+                                <select id="fontSize" class="select-btn">
+                                    <option value="10">Small (10pt)</option>
+                                    <option value="12" selected>Medium (12pt)</option>
+                                    <option value="14">Large (14pt)</option>
+                                    <option value="18">X-Large (18pt)</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>Font Style</label>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn active" id="styleNormal">Normal</button>
+                                    <button class="toggle-btn" id="styleBold">Bold</button>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label>Orientation</label>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn active" id="orientPortrait">Portrait</button>
+                                    <button class="toggle-btn" id="orientLandscape">Landscape</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="font-size: 0.85rem; color: var(--slate-500); font-weight: 700; text-align: center;">
+                            💡 Tip: Long content will automatically create multiple pages in the PDF.
+                        </div>
+
+                        <div class="actions">
+                            <button class="btn btn-primary" id="generateBtn">🚀 Generate & Download PDF</button>
+                            <button class="btn btn-outline" id="clearBtn">🗑️ Clear Text</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEO Content -->
+        <section class="section-padding" style="background: white; border-radius: 3rem 3rem 0 0;">
+            <div class="container">
+                <div class="content-grid">
+                    <div class="content-block">
+                        <h2>Convert Plain Text to PDF Instantly</h2>
+                        <p>Our Text to PDF tool is the simplest way to create clean documents without complex software. Whether you need to save a quick note, format an assignment, or archive a long article, ToolHub Pro handles the layout for you. It automatically wraps your text and adds new pages as needed, maintaining perfect margins and readability.</p>
+                        <p>Simply choose your preferred <span style="font-weight:800; color:var(--primary)">font size</span> and <span style="font-weight:800; color:var(--primary)">page orientation</span>, and our engine will do the rest in a single click.</p>
+                    </div>
+                    <div class="content-block">
+                        <h2>Your Privacy is Our Priority</h2>
+                        <p>Unlike other online converters that send your text to a server for processing, ToolHub Pro is built with a <span style="font-weight:800; color:var(--primary)">Privacy-First</span> architecture. All PDF generation happens directly inside your web browser using JavaScript. This means your text never leaves your device, keeping your sensitive information 100% private.</p>
+                        <p>This tool is completely free, secure, and requires no registration. It's the perfect solution for users who value data security and speed.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="section-padding" style="background: var(--slate-100);">
+            <div class="container">
+                <h2 style="font-size: 2.25rem; font-weight: 800; text-align: center; margin-bottom: 3.5rem;">Frequently Asked Questions</h2>
+                <div class="faq-grid">
+                    <div class="faq-card">
+                        <h3>Will my long text be split into pages?</h3>
+                        <p>Yes. Our converter uses smart line-wrapping and page-break logic. If your text exceeds one page, the tool will automatically create additional pages within the single PDF file.</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>Is there a character limit?</h3>
+                        <p>There is no strict limit, though extremely long documents (e.g., hundreds of pages) may take a few seconds to process depending on your computer's performance.</p>
+                    </div>
+                    <div class="faq-card">
+                        <h3>Can I use this offline?</h3>
+                        <p>Once the tool is loaded in your browser, the PDF conversion happens entirely locally. You can generate and download your PDF even without an active internet connection.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Related Tools -->
+        <section class="section-padding">
+            <div class="container">
+                <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 3rem; text-align: center;">Related Document Utilities</h2>
+                <div class="tools-grid">
+                    <a href="#" class="tool-link-card">
+                        <span style="font-size: 2rem;">✂️</span>
+                        <h4>PDF Splitter</h4>
+                        <p>Split large PDF files by page ranges or extract specific pages instantly.</p>
+                        <span class="tool-arrow">Try Now &rarr;</span>
+                    </a>
+                    <a href="#" class="tool-link-card">
+                        <span style="font-size: 2rem;">🤝</span>
+                        <h4>PDF Merger</h4>
+                        <p>Combine multiple PDF documents into one professional file securely.</p>
+                        <span class="tool-arrow">Try Now &rarr;</span>
+                    </a>
+                    <a href="#" class="tool-link-card">
+                        <span style="font-size: 2rem;">🖼️</span>
+                        <h4>PDF to Image</h4>
+                        <p>Convert every page of your PDF into high-quality JPG or PNG images.</p>
+                        <span class="tool-arrow">Try Now &rarr;</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <div id="footer"></div>
+
+    <script>
+        const { jsPDF } = window.jspdf;
+
+        // State
+        let currentStyle = 'normal';
+        let currentOrientation = 'p'; // p for portrait, l for landscape
+
+        // DOM Elements
+        const textInput = document.getElementById('textInput');
+        const fontSizeSelect = document.getElementById('fontSize');
+        const styleNormal = document.getElementById('styleNormal');
+        const styleBold = document.getElementById('styleBold');
+        const orientPortrait = document.getElementById('orientPortrait');
+        const orientLandscape = document.getElementById('orientLandscape');
+        const generateBtn = document.getElementById('generateBtn');
+        const clearBtn = document.getElementById('clearBtn');
+
+        // Events
+        styleNormal.addEventListener('click', () => {
+            styleNormal.classList.add('active');
+            styleBold.classList.remove('active');
+            currentStyle = 'normal';
+        });
+
+        styleBold.addEventListener('click', () => {
+            styleBold.classList.add('active');
+            styleNormal.classList.remove('active');
+            currentStyle = 'bold';
+        });
+
+        orientPortrait.addEventListener('click', () => {
+            orientPortrait.classList.add('active');
+            orientLandscape.classList.remove('active');
+            currentOrientation = 'p';
+        });
+
+        orientLandscape.addEventListener('click', () => {
+            orientLandscape.classList.add('active');
+            orientPortrait.classList.remove('active');
+            currentOrientation = 'l';
+        });
+
+        clearBtn.addEventListener('click', () => {
+            textInput.value = '';
+            generateBtn.disabled = true;
+        });
+
+        textInput.addEventListener('input', () => {
+            generateBtn.disabled = textInput.value.trim() === '';
+        });
+
+        generateBtn.addEventListener('click', generatePDF);
+
+        // Initial state
+        generateBtn.disabled = true;
+
+        async function generatePDF() {
+            const content = textInput.value.trim();
+            if (!content) return;
+
+            generateBtn.disabled = true;
+            generateBtn.textContent = '⌛ Creating PDF...';
+
+            try {
+                const doc = new jsPDF({
+                    orientation: currentOrientation,
+                    unit: 'mm',
+                    format: 'a4'
+                });
+
+                const fontSize = parseInt(fontSizeSelect.value);
+                const margin = 20; // 20mm margins
+                const pageWidth = doc.internal.pageSize.getWidth();
+                const pageHeight = doc.internal.pageSize.getHeight();
+                const contentWidth = pageWidth - (margin * 2);
+                
+                doc.setFont('helvetica', currentStyle);
+                doc.setFontSize(fontSize);
+
+                // Split text into lines that fit the width
+                const lines = doc.splitTextToSize(content, contentWidth);
+                
+                let cursorY = margin;
+                const lineHeight = fontSize * 0.5; // Rough estimate in mm
+
+                for (let i = 0; i < lines.length; i++) {
+                    // Check if we need a new page
+                    if (cursorY + lineHeight > pageHeight - margin) {
+                        doc.addPage();
+                        cursorY = margin;
+                    }
+                    doc.text(lines[i], margin, cursorY);
+                    cursorY += lineHeight;
+                }
+
+                doc.save('text-document.pdf');
+                
+                generateBtn.textContent = '✅ Downloaded';
+                setTimeout(() => {
+                    generateBtn.textContent = '🚀 Generate & Download PDF';
+                    generateBtn.disabled = false;
+                }, 2000);
+
+            } catch (err) {
+                console.error("PDF generation failed:", err);
+                alert("Sorry, we couldn't create the PDF. Please try with shorter text.");
+                generateBtn.textContent = '🚀 Generate & Download PDF';
+                generateBtn.disabled = false;
+            }
+        }
+    </script>
+
+    <!-- js for navbar and footer -->
+ <script>
+fetch("/include/navbar.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("navbar").innerHTML = data;
+  });
+
+fetch("/include/footer.html")
+  .then(res => res.text())
+  .then(data => {
+    document.getElementById("footer").innerHTML = data;
+  });
+</script>
+
+
+<script>
+document.addEventListener("click", function (e) {
+
+  /* =========================
+     MOBILE MENU OPEN
+  ========================== */
+  if (e.target.closest("#openMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.add("active");
+      document.body.style.overflow = "hidden";
+    }
+  }
+
+  /* =========================
+     MOBILE MENU CLOSE
+  ========================== */
+  if (e.target.closest("#closeMenu")) {
+    const menu = document.getElementById("mobileMenu");
+    if (menu) {
+      menu.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
+
+  /* =========================
+     MOBILE CATEGORIES DROPDOWN
+     (MATCHES YOUR navbar.html)
+  ========================== */
+  if (e.target.closest("#mobileCatToggle")) {
+    const dropdown = document.getElementById("mobileDropdown");
+    if (dropdown) {
+      dropdown.classList.toggle("active");
+    }
+  }
+
+});
+
+// page navigation with fade effect
+document.addEventListener("click", function (e) {
+  const link = e.target.closest("a");
+  if (!link) return;
+
+  const href = link.getAttribute("href");
+  if (!href) return;
+
+  // ❌ hash links ignore ( #popular , /index.html#popular )
+  if (href.includes("#")) return;
+
+  // ❌ new tab links ignore
+  if (link.hasAttribute("target")) return;
+
+  // ❌ external links ignore
+  if (link.origin !== location.origin) return;
+
+  // ❌ empty / js links ignore
+  if (href === "#" || href.startsWith("javascript")) return;
+
+  // ✅ real page navigation only
+  e.preventDefault();
+  document.body.classList.add("is-leaving");
+
+  setTimeout(() => {
+    window.location.href = link.href;
+  }, 120);
+});
+
+
+window.addEventListener("pageshow", function (event) {
+  if (event.persisted) {
+    window.location.reload();
+  }
+});
+</script>
+
+
+</body>
+</html>
